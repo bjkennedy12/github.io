@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto-Snap Rosary</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* 1. Mandatory Snapping: This is what makes it 'automatic' */
+        html {
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+            background-color: #0c0c0e;
+        }
+
+        body { margin: 0; overflow-x: hidden; }
+        ::-webkit-scrollbar { display: none; } /* Hide scrollbar for app feel */
+
+        /* 2. Section Setup */
+        section {
+            height: 100vh;
+            width: 100vw;
+            scroll-snap-align: start;
+            scroll-snap-stop: always; /* Prevents skipping sections */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bead-transition { 
+            transition: all 0.7s cubic-bezier(0.22, 1, 0.36, 1); 
+        }
+
+        /* Subtle fade for non-active text */
+        .content-container {
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        function RosaryApp() {
+            const [activeIndex, setActiveIndex] = useState(0);
+            const totalBeads = 11;
+            const beads = Array.from({ length: totalBeads });
+
+            useEffect(() => {
+                // Using Intersection Observer to detect which section is "snapped"
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            setActiveIndex(parseInt(entry.target.dataset.index));
+                        }
+                    });
+                }, { 
+                    threshold: 0.7 // Trigger only when 70% of the section is visible
+                });
+
+                document.querySelectorAll('section').forEach(s => observer.observe(s));
+                return () => observer.disconnect();
+            }, []);
+
+            const scrollToSection = (i) => {
+                document.getElementById(`section-${i}`).scrollIntoView({ behavior: 'smooth' });
+            };
+
+            return (
+                <div className="relative">
+                    {/* NAV SIDEBAR */}
+                    <div className="fixed right-6 md:right-12 top-1/2 -translate-y-1/2 flex flex-col items-center z-50">
+                        {beads.map((_, i) => (
+                            <React.Fragment key={i}>
+                                <div className="relative flex items-center cursor-pointer p-1" onClick={() => scrollToSection(i)}>
+                                    <span className={`absolute right-10 text-[10px] uppercase tracking-widest font-bold transition-all duration-500 whitespace-nowrap ${i === activeIndex ? 'text-amber-500 opacity-100 translate-x-0' : 'text-zinc-600 opacity-0 translate-x-4'}`}>
+                                        {i === 0 ? "Our Father" : i === 10 ? "Glory Be" : `Ave ${i}`}
+                                    </span>
+                                    <div className={`w-2.5 h-2.5 rounded-full border-2 bead-transition ${i <= activeIndex ? 'bg-amber-500 border-amber-500 shadow-[0_0_15px_rgba(245,158,11,0.5)]' : 'border-zinc-800'}`}></div>
+                                </div>
+                                {i < totalBeads - 1 && (
+                                    <div className={`w-[1px] h-7 bead-transition ${i < activeIndex ? 'bg-amber-500' : 'bg-zinc-900'}`}></div>
+                                )}
+                            </React.Fragment>
+                        ))}
+                    </div>
+
+                    {/* FULL SCREEN SECTIONS */}
+                    {beads.map((_, i) => (
+                        <section id={`section-${i}`} key={i} data-index={i}>
+                            <div className={`max-w-3xl text-center px-10 content-container ${i === activeIndex ? 'opacity-100 scale-100' : 'opacity-10 scale-95'}`}>
+                                <h2 className="text-zinc-500 uppercase tracking-[0.4em] text-[10px] mb-4">First Glorious Mystery</h2>
+                                <h1 className="text-4xl md:text-6xl font-serif font-light mb-8 text-zinc-100 italic">The Resurrection</h1>
+                                <div className="w-16 h-[1px] bg-amber-500/20 mx-auto mb-10"></div>
+                                <p className="text-2xl md:text-4xl text-zinc-300 font-serif leading-relaxed italic">
+                                    {i === 0 ? "Our Father, Who art in heaven..." : 
+                                     i === 10 ? "Glory be to the Father, and to the Son..." : 
+                                     "Hail Mary, full of grace, the Lord is with thee..."}
+                                </p>
+                            </div>
+                        </section>
+                    ))}
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<RosaryApp />);
+    </script>
+</body>
+</html>
