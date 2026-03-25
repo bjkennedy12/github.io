@@ -3,21 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>The Glorious Mysteries</title>
+    <title>The Holy Rosary</title>
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     
     <style>
-        html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; background-color: #0c0c0e; }
+        html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; background-color: #0c0c0e; color: white; }
         #root { height: 100vh; overflow-y: scroll; scroll-snap-type: y mandatory; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
         section { height: 100vh; width: 100vw; scroll-snap-align: start; scroll-snap-stop: always; position: relative; display: flex; flex-shrink: 0; }
         ::-webkit-scrollbar { display: none; }
         .bead-transition { transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
         .content-fade { transition: opacity 1s ease, transform 1s ease; }
-        
-        /* Modal Animation */
         .modal-enter { animation: fadeIn 0.4s ease forwards; }
         @keyframes fadeIn { from { opacity: 0; backdrop-filter: blur(0px); } to { opacity: 1; backdrop-filter: blur(12px); } }
     </style>
@@ -29,35 +27,89 @@
         const { useState, useEffect } = React;
 
         function RosaryApp() {
+            const [currentSet, setCurrentSet] = useState(null); 
             const [globalIndex, setGlobalIndex] = useState(0);
             const [showCreed, setShowCreed] = useState(false);
             const slidesPerMystery = 12;
 
-            const allSlides = [
-                { type: "title", isBookend: true, image: "https://upload.wikimedia.org/wikipedia/commons/c/c9/1%D0%B7_Ugolino_di_Nerio._The_Resurrection._1324-25._London_NG.jpg", mystery: "Opening Prayers", title: "The Glorious Mysteries", text: "The Creed · Our Father · Three Hail Marys · Glory Be" },
-                // ... Mystery 1 (Resurrection)
-                { type: "title", label: "Our Father", image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj2IYgRDlNJPyg3Y_aIZ6D4KnsA0LgAHkrpOawByJovnDaAadok49ur5RWYNM2MTDUYfURw1CC1aKqhW7pJW-e6379aQaYRWIuWJa3c4mFeYhFNcRTXT_Q4V4NCsIf1C-soti_4BBAZzcu2kQiizgt0PvIgUlr7DNBe-tC5pr8A-aEZ4fdpVDI6Pcwo/s1200/The%20Empty%20Tomb.jpeg", mystery: "First Glorious Mystery", title: "The Resurrection", text: "Our Father..." },
-                { type: "ave", label: "1st Ave", image: "https://www.artlovingitaly.com/wp-content/uploads/2025/04/Resurreciton-Duccio-1024x770.jpg", text: "I am the resurrection and the life; whoever believes in me, even if he dies, will live, and everyone who lives and believes in me will never die." },
-                { type: "ave", label: "2nd Ave", image: "https://cerebralfaith.net/wp-content/uploads/2015/05/pexels-photo-5773206.jpeg", text: "If Christ has not been raised, then empty is our preaching...But now Christ has been raised from the dead." },
-                { type: "ave", label: "3rd Ave", image: "https://arthive.com/res/media/img/oy800/work/942/662647.jpg", text: "The author of life you put to death, but God raised him from the dead; of this we are witnesses." },
-                { type: "ave", label: "4th Ave", image: "https://www.omniasacra.com/wp-content/uploads/2025/02/ICONA-RESUREZIONE-DI-CRISTO-IKO82-2.jpg", text: "For just as the Father raises the dead and gives life, so also does the Son give life to whomever he wishes." },
-                { type: "ave", label: "5th Ave", image: "m1-5.jpg", text: "Text..." },
-                { type: "ave", label: "6th Ave", image: "m1-6.jpg", text: "Text..." },
-                { type: "ave", label: "7th Ave", image: "m1-7.jpg", text: "Text..." },
-                { type: "ave", label: "8th Ave", image: "m1-8.jpg", text: "Text..." },
-                { type: "ave", label: "9th Ave", image: "m1-9.jpg", text: "Text..." },
-                { type: "ave", label: "10th Ave", image: "m1-10.jpg", text: "Text..." },
-                { type: "glory", label: "Glory Be", image: "m1-11.jpg", text: "Glory be..." },
-                // ... (Add your other Mysteries 2-5 here)
-                { type: "title", isBookend: true, image: "OUTRO_IMAGE.jpg", mystery: "Final Prayers", title: "Hail Holy Queen", text: "Hail, Holy Queen..." }
-            ];
+            // --- HELPER TO CREATE 12 SLIDES PER MYSTERY ---
+            // This saves you from typing "Hail Mary" 40 times. 
+            // It uses a naming pattern: mysteryKey + slideIndex (e.g., joyful-0.jpg)
+            const buildMystery = (key, name, titles, scriptures) => {
+                let mysterySlides = [];
+                titles.forEach((title, mIndex) => {
+                    // Our Father
+                    mysterySlides.push({ type: "title", label: "Our Father", image: `${key}-${mIndex}-0.jpg`, mystery: name, title: title, text: "Our Father..." });
+                    // 10 Aves
+                    for(let i=1; i<=10; i++) {
+                        mysterySlides.push({ type: "ave", label: `${i} Ave`, image: `${key}-${mIndex}-${i}.jpg`, text: scriptures[mIndex] || "Hail Mary, full of grace..." });
+                    }
+                    // Glory Be
+                    mysterySlides.push({ type: "glory", label: "Glory Be", image: `${key}-${mIndex}-11.jpg`, text: "Glory be to the Father... Oh my Jesus..." });
+                });
+                return mysterySlides;
+            };
 
+ const mysteryData = {
+    glorious: [
+        // INTRO
+        { type: "title", isBookend: true, image: "INTRO_URL", mystery: "Opening Prayers", title: "The Glorious Mysteries", text: "In the name of the Father..." },
+
+        // --- FIRST MYSTERY: THE RESURRECTION ---
+        { type: "title", label: "Our Father", image: "IMAGE_URL", mystery: "First Glorious Mystery", title: "The Resurrection", text: "Our Father..." },
+        { type: "ave", label: "1st Ave", image: "IMAGE_URL", text: "Peace be with you! Do not be afraid." },
+        { type: "ave", label: "2nd Ave", image: "IMAGE_URL", text: "I am the Resurrection and the Life." },
+        { type: "ave", label: "3rd Ave", image: "IMAGE_URL", text: "Text for 3rd Ave..." },
+        { type: "ave", label: "4th Ave", image: "IMAGE_URL", text: "Text for 4th Ave..." },
+        { type: "ave", label: "5th Ave", image: "IMAGE_URL", text: "Text for 5th Ave..." },
+        { type: "ave", label: "6th Ave", image: "IMAGE_URL", text: "Text for 6th Ave..." },
+        { type: "ave", label: "7th Ave", image: "IMAGE_URL", text: "Text for 7th Ave..." },
+        { type: "ave", label: "8th Ave", image: "IMAGE_URL", text: "Text for 8th Ave..." },
+        { type: "ave", label: "9th Ave", image: "IMAGE_URL", text: "Text for 9th Ave..." },
+        { type: "ave", label: "10th Ave", image: "IMAGE_URL", text: "Text for 10th Ave..." },
+        { type: "glory", label: "Glory Be", image: "IMAGE_URL", text: "Glory be to the Father... Oh my Jesus..." },
+
+        // --- SECOND MYSTERY: THE ASCENSION ---
+        { type: "title", label: "Our Father", image: "IMAGE_URL", mystery: "Second Glorious Mystery", title: "The Ascension", text: "Our Father..." },
+        { type: "ave", label: "1st Ave", image: "IMAGE_URL", text: "Glorious 1" },
+        { type: "ave", label: "2nd Ave", image: "IMAGE_URL", text: "Glorious 2" },
+        { type: "ave", label: "3rd Ave", image: "IMAGE_URL", text: "Text for 3rd Ave..." },
+        { type: "ave", label: "4th Ave", image: "IMAGE_URL", text: "Text for 4th Ave..." },
+        { type: "ave", label: "5th Ave", image: "IMAGE_URL", text: "Text for 5th Ave..." },
+        { type: "ave", label: "6th Ave", image: "IMAGE_URL", text: "Text for 6th Ave..." },
+        { type: "ave", label: "7th Ave", image: "IMAGE_URL", text: "Text for 7th Ave..." },
+        { type: "ave", label: "8th Ave", image: "IMAGE_URL", text: "Text for 8th Ave..." },
+        { type: "ave", label: "9th Ave", image: "IMAGE_URL", text: "Text for 9th Ave..." },
+        { type: "ave", label: "10th Ave", image: "IMAGE_URL", text: "Text for 10th Ave..." },
+        { type: "glory", label: "Glory Be", image: "IMAGE_URL", text: "Glory be to the Father... Oh my Jesus..." },
+        // ... Repeat this pattern for all 5 mysteries
+
+        // OUTRO
+        { type: "title", isBookend: true, image: "OUTRO_URL", mystery: "Final Prayers", title: "Hail Holy Queen", text: "Hail, Holy Queen..." }
+    ],
+
+    sorrowful: [
+        { type: "title", isBookend: true, image: "SORROWFUL_INTRO_URL", mystery: "Opening Prayers", title: "The Sorrowful Mysteries", text: "..." },
+        // ... (Follow the same manual list pattern as above)
+    ],
+
+    joyful: [
+        // ... (Manual list for Joyful)
+    ],
+
+    luminous: [
+        // ... (Manual list for Luminous)
+    ]
+};
+
+            const allSlides = currentSet ? mysteryData[currentSet] : [];
             const isBookend = allSlides[globalIndex]?.isBookend;
             const adjustedIndex = globalIndex - 1; 
-            const currentMysteryIndex = Math.floor(adjustedIndex / slidesPerMystery);
+            const currentMysteryPart = Math.floor(adjustedIndex / slidesPerMystery);
             const indexWithinMystery = adjustedIndex % slidesPerMystery;
 
             useEffect(() => {
+                if (!currentSet) return;
                 const observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
                         if (entry.isIntersecting) setGlobalIndex(parseInt(entry.target.dataset.index));
@@ -65,84 +117,113 @@
                 }, { threshold: 0.6 });
                 document.querySelectorAll('section').forEach(s => observer.observe(s));
                 return () => observer.disconnect();
-            }, []);
+            }, [currentSet]);
 
             const scrollToSection = (i) => {
-                const target = (currentMysteryIndex * slidesPerMystery) + i + 1;
+                const target = (currentMysteryPart * slidesPerMystery) + i + 1;
                 document.getElementById(`section-${target}`).scrollIntoView({ behavior: 'smooth' });
             };
 
+            // --- START PAGE (MENU) ---
+if (!currentSet) {
+    return (
+        <div className="relative h-screen w-screen overflow-hidden flex flex-col items-center justify-center p-6 text-center">
+            
+            {/* 1. BACKGROUND IMAGE LAYER */}
+            <div 
+                className="absolute inset-0 bg-cover bg-center transition-transform duration-[10s] scale-110" 
+                style={{ backgroundImage: `url('https://www.arthistoryproject.com/site/assets/files/28867/diego_velazquez-coronation_of_the_virgin-1636-trivium-art-history-1.webp')` }}
+            >
+                {/* 2. DARK OVERLAY (Ensures menu text is readable) */}
+
+            </div>
+
+            {/* 3. CONTENT LAYER (Now wrapped in a relative div to sit above the image) */}
+            <div className="relative z-10 flex flex-col items-center w-full">
+                <h2 className="text-zinc-400 uppercase tracking-[0.4em] text-[10px] mb-4 font-bold drop-shadow-md">Daily Devotion</h2>
+                <h1 className="text-5xl md:text-7xl font-serif text-white italic mb-12 drop-shadow-2xl">The Holy Rosary</h1>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-3xl">
+                    {[
+                        { id: 'joyful', day: 'Mon & Sat', name: 'Joyful', color: 'border-blue-500/30' },
+                        { id: 'luminous', day: 'Thursday', name: 'Luminous', color: 'border-yellow-500/30' },
+                        { id: 'sorrowful', day: 'Tue & Fri', name: 'Sorrowful', color: 'border-red-500/30' },
+                        { id: 'glorious', day: 'Wed & Sun', name: 'Glorious', color: 'border-amber-500/30' }
+                    ].map(m => (
+                        <button key={m.id} onClick={() => { setCurrentSet(m.id); setGlobalIndex(0); }} 
+                            className={`p-6 bg-black/40 border ${m.color} rounded-2xl hover:bg-white/10 transition-all text-left backdrop-blur-md`}>
+                            <span className="block text-[9px] uppercase tracking-widest text-zinc-500 mb-1">{m.day}</span>
+                            <span className="text-xl text-white font-serif italic">{m.name} Mysteries</span>
+                        </button>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+}
+
+            // --- ROSARY APP ---
             return (
                 <div className="relative">
+                    {/* BACK BUTTON */}
+                    <button onClick={() => setCurrentSet(null)} className="fixed top-8 left-8 z-[70] text-white/40 hover:text-white uppercase text-[9px] tracking-widest font-bold">
+                        ← Menu
+                    </button>
+
                     {/* CREED MODAL */}
                     {showCreed && (
-                        <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/60 modal-enter">
-                            <div className="max-w-2xl w-full bg-zinc-900/90 border border-white/10 p-8 md:p-12 rounded-2xl shadow-2xl overflow-y-auto max-h-[80vh]">
-                                <h3 className="text-amber-500 uppercase tracking-widest text-xs font-bold mb-6">The Apostles' Creed</h3>
-                                <p className="text-zinc-200 font-serif text-lg md:text-xl leading-relaxed italic">
-                                    I believe in God, the Father almighty, Creator of heaven and earth, and in Jesus Christ, his only Son, our Lord, who was conceived by the Holy Spirit, born of the Virgin Mary, suffered under Pontius Pilate, was crucified, died and was buried; he descended into hell; on the third day he rose again from the dead; he ascended into heaven, and is seated at the right hand of God the Father almighty; from there he will come to judge the living and the dead. <br/><br/>
-                                    I believe in the Holy Spirit, the holy catholic Church, the communion of saints, the forgiveness of sins, the resurrection of the body, and life everlasting. Amen.
+                        <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/60 modal-enter" onClick={() => setShowCreed(false)}>
+                            <div className="max-w-2xl w-full bg-zinc-900/95 border border-white/10 p-8 md:p-12 rounded-3xl shadow-2xl" onClick={e => e.stopPropagation()}>
+                                <h3 className="text-amber-500 uppercase tracking-widest text-xs font-bold mb-6 text-center">The Apostles' Creed</h3>
+                                <p className="text-zinc-200 font-serif text-lg md:text-xl leading-relaxed italic text-center">
+                                    I believe in God, the Father almighty, Creator of heaven and earth...
                                 </p>
-                                <button 
-                                    onClick={() => setShowCreed(false)}
-                                    className="mt-10 px-6 py-2 border border-amber-500/50 text-amber-500 rounded-full hover:bg-amber-500 hover:text-black transition-all uppercase text-[10px] tracking-widest font-bold"
-                                >
-                                    Close
-                                </button>
                             </div>
                         </div>
                     )}
 
-                    {/* NAV SIDEBAR */}
+                    {/* BEAD SIDEBAR */}
                     {!isBookend && (
                         <div className="fixed right-4 md:right-10 top-1/2 -translate-y-1/2 flex flex-col items-center z-50">
                             {Array.from({ length: slidesPerMystery }).map((_, i) => (
                                 <React.Fragment key={i}>
                                     <div className="group relative flex items-center cursor-pointer p-1" onClick={() => scrollToSection(i)}>
-                                        <span className={`absolute right-10 text-[10px] uppercase tracking-widest font-bold transition-all duration-500 whitespace-nowrap ${i === indexWithinMystery ? 'text-amber-500 opacity-100' : 'opacity-0'}`}>
-                                            {i === 0 ? "Our Father" : i === 11 ? "Glory Be" : `${i}${["st","nd","rd"][i-1] || "th"} Ave`}
+                                        <span className={`absolute right-10 text-[9px] uppercase tracking-widest font-bold transition-all duration-500 whitespace-nowrap ${i === indexWithinMystery ? 'text-amber-500 opacity-100' : 'opacity-0'}`}>
+                                            {i === 0 ? "Our Father" : i === 11 ? "Glory Be" : `${i} Ave`}
                                         </span>
                                         <div className={`w-2.5 h-2.5 rounded-full border-2 bead-transition ${i <= indexWithinMystery ? 'bg-amber-500 border-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.5)]' : 'border-zinc-800 bg-zinc-900'}`}></div>
                                     </div>
                                     {i < slidesPerMystery - 1 && <div className={`w-[1px] h-4 bead-transition ${i < indexWithinMystery ? 'bg-amber-500' : 'bg-zinc-900'}`}></div>}
                                 </React.Fragment>
                             ))}
+                            <div className="mt-4 text-[8px] text-zinc-600 font-bold tracking-tighter uppercase">{currentMysteryPart + 1} / 5</div>
                         </div>
                     )}
 
                     {/* SECTIONS */}
                     {allSlides.map((slide, i) => (
-                        <section id={`section-${i}`} key={i} data-index={i}>
-                            <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url('${slide.image}')` }}>
-                                <div className="absolute inset-0 bg-black opacity-30"></div>
+                        <section id={`section-${i}`} key={i} data-index={i} className="flex flex-col">
+                            <div className="absolute inset-0 bg-cover bg-center transition-transform duration-[10s] ease-linear scale-110" style={{ backgroundImage: `url('${slide.image}')` }}>
+                                <div className="absolute inset-0 bg-black/30"></div>
                             </div>
                             
-                            <div className={`relative z-10 w-full flex flex-col items-center justify-center text-center px-10 content-fade ${i === globalIndex ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
+                            <div className={`relative z-10 w-full h-full flex flex-col content-fade ${i === globalIndex ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
                                 {slide.type === "title" ? (
-                                    <div className="self-center">
-                                        <h2 className="text-zinc-300 uppercase tracking-[0.4em] text-[10px] mb-4 font-bold">{slide.mystery}</h2>
-                                        <h1 className="text-5xl md:text-8xl font-serif mb-8 text-white italic drop-shadow-lg">{slide.title}</h1>
+                                    <div className="flex-1 flex flex-col items-center justify-center text-center px-10">
+                                        <h2 className="text-zinc-400 uppercase tracking-[0.4em] text-[10px] mb-4 font-bold">{slide.mystery}</h2>
+                                        <h1 className="text-5xl md:text-8xl font-serif mb-8 text-white italic drop-shadow-2xl">{slide.title}</h1>
                                         <div className="w-16 h-[1px] bg-white/40 mx-auto mb-10"></div>
-                                        <p className="text-2xl md:text-4xl text-white font-serif italic mb-8">{slide.text}</p>
-                                        
-                                        {/* Show Creed Button ONLY on the Intro Slide */}
+                                        <p className="text-2xl md:text-4xl text-white font-serif italic mb-8 max-w-4xl">{slide.text}</p>
                                         {i === 0 && (
-                                            <button 
-                                                onClick={() => setShowCreed(true)}
-                                                className="mt-4 px-8 py-3 bg-white/5 border border-white/20 hover:bg-white/10 text-white rounded-full transition-all uppercase text-[10px] tracking-[0.3em] font-bold backdrop-blur-sm"
-                                            >
-                                                The Creed
-                                            </button>
+                                            <button onClick={() => setShowCreed(true)} className="px-8 py-3 bg-white/5 border border-white/20 hover:bg-white/10 text-white rounded-full uppercase text-[9px] tracking-[0.3em] font-bold backdrop-blur-sm">The Creed</button>
                                         )}
                                     </div>
                                 ) : (
-                                   <div className="flex-1 flex flex-col justify-end w-full px-4 pb-16 md:px-20 md:pb-24">
-    <div className="w-full md:max-w-3xl text-left border-l-2 border-amber-500/50 pl-4 md:pl-6 py-2">
-        <p className="text-1xl md:text-5xl text-white font-serif leading-tight italic drop-shadow-lg">
-            {slide.text}
-        </p>
-    </div>
-</div>
+                                    <div className="flex-1 flex flex-col justify-end items-start px-4 pb-16 md:px-20 md:pb-24">
+                                        <div className="w-full md:max-w-3xl text-left border-l-2 border-amber-500/50 pl-4 md:pl-6 py-2">
+                                            <p className="text-2xl md:text-5xl text-white font-serif leading-tight italic drop-shadow-lg">{slide.text}</p>
+                                        </div>
+                                    </div>
                                 )}
                             </div>
                         </section>
