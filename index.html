@@ -30,6 +30,8 @@
             const [currentSet, setCurrentSet] = useState(null); 
             const [globalIndex, setGlobalIndex] = useState(0);
             const [showCreed, setShowCreed] = useState(false);
+			const [showSalve, setShowSalve] = useState(false); // New
+			const [showClosing, setShowClosing] = useState(false); // New
             const slidesPerMystery = 12;
 
             // --- HELPER TO CREATE 12 SLIDES PER MYSTERY ---
@@ -112,22 +114,30 @@
         { type: "glory", label: "Glory Be", image: "https://www.thecatholicthing.org/wp-content/uploads/assumptionFA-1.jpeg", text: "Glory Be · Oh, My Jesus…" },
 		
 		// --- FIFTH MYSTERY: THE CORONATION ---
-        { type: "title", label: "Our Father", image: "IMAGE_URL", mystery: "Fifth Glorious Mystery", title: "The Coronation", text: "Our Father..." },
-        { type: "ave", label: "1st Ave", image: "IMAGE_URL", text: "Peace be with you! Do not be afraid." },
-        { type: "ave", label: "2nd Ave", image: "IMAGE_URL", text: "I am the Resurrection and the Life." },
-        { type: "ave", label: "3rd Ave", image: "IMAGE_URL", text: "Text for 3rd Ave..." },
-        { type: "ave", label: "4th Ave", image: "IMAGE_URL", text: "Text for 4th Ave..." },
-        { type: "ave", label: "5th Ave", image: "IMAGE_URL", text: "Text for 5th Ave..." },
-        { type: "ave", label: "6th Ave", image: "IMAGE_URL", text: "Text for 6th Ave..." },
-        { type: "ave", label: "7th Ave", image: "IMAGE_URL", text: "Text for 7th Ave..." },
-        { type: "ave", label: "8th Ave", image: "IMAGE_URL", text: "Text for 8th Ave..." },
-        { type: "ave", label: "9th Ave", image: "IMAGE_URL", text: "Text for 9th Ave..." },
-        { type: "ave", label: "10th Ave", image: "IMAGE_URL", text: "Text for 10th Ave..." },
-        { type: "glory", label: "Glory Be", image: "IMAGE_URL", text: "Glory be to the Father... Oh my Jesus..." },
+        { type: "title", label: "Our Father", image: "https://images.opusdei.net/?url=https://s3-eu-west-1.amazonaws.com/images-opus-dei/image/velazquez_20200819185239688704.jpg", mystery: "Fifth Glorious Mystery", title: "The Coronation", text: "Our Father..." },
+        { type: "ave", label: "1st Ave", image: "https://opwest.org/assets/image-cache/Fra_Angelico_081.e2f75db6.3f966e6d.webP", text: "Behold, the Queen of all the inhabitants of the earth... she is the Queen of the human race." },
+        { type: "ave", label: "2nd Ave", image: "https://www.nationalgallery.org.uk/media/03plc3wn/n-0214-00-000012-web-hd.jpg", text: "The Kingdom of God is divided into two parts: Justice and Mercy. The King has reserved Justice for Himself and yielded Mercy to the Queen." },
+        { type: "ave", label: "3rd Ave", image: "https://arthive.com/res/media/img/oy800/work/7f1/566760@2x.jpg", text: "She is the Queen of the World, the Mother of God, the Virgin of Virgins." },
+        { type: "ave", label: "4th Ave", image: "https://smarthistory.org/wp-content/uploads/2019/08/Holy-Trinity-detail.jpg", text: "All the gifts, virtues, and graces of the Holy Spirit are administered by the hands of Mary to whom she wills, when she wills, and how she wills." },
+        { type: "ave", label: "5th Ave", image: "https://www.visualmuseum.gallery/wp-content/uploads/2023/12/0068_mary_coronation_mosaic_rome_italy_santa-maria-maggiore_apse_closeup-scaled.jpg", text: "The Lord has crowned her with a crown of beauty... she is the Star of the Sea, the Queen of Heaven." },
+        { type: "ave", label: "6th Ave", image: "https://www.womenofgrace.com/blog/wp-content/uploads/2018/08/Coronationof-Mary.jpg", text: "As God is the Father of all things, so Mary is the Mother of all things re-created... God is the Lord of all, and Mary is the Queen of all." },
+        { type: "ave", label: "7th Ave", image: "https://d3d00swyhr67nd.cloudfront.net/w1200h1200/collection/CIA/CIA/CIA_CIA_P_1978_PG_363-001.jpg", text: "I am the perfect and ever Virgin Holy Mary, Mother of the God of truth through Whom everything lives... the Lord of heaven and earth." },
+        { type: "ave", label: "8th Ave", image: "https://www.proantic.com/galerie/antichita-ischia-romano/img/813483-main-610e94f62dc8a.jpg", text: "I am the Immaculate Conception. I do not promise to make you happy in this world, but in the other." },
+        { type: "ave", label: "9th Ave", image: "https://wmuzeach.pl/brepo/panel_repo/2021/10/14/obb0y9/s12829mc581-00217.jpg", text: "Jesus wishes to establish devotion to my Immaculate Heart in the world... these souls will be beloved of God like flowers arranged by me to adorn His throne." },
+        { type: "ave", label: "10th Ave", image: "https://taylormarshall.com/wp-content/uploads/2008/08/christ-savior-of-mary.jpg", text: "In the end, my Immaculate Heart will triumph." },
+        { type: "glory", label: "Glory Be", image: "https://cdn.creazilla.com/illustrations/6675505/coronation-of-mary-with-saints-by-guido-reni-illustration-xl.jpeg", text: "Glory Be · Oh, My Jesus…" },
         // ... Repeat this pattern for all 5 mysteries
 
         // OUTRO
-        { type: "title", isBookend: true, image: "OUTRO_URL", mystery: "Final Prayers", title: "Hail Holy Queen", text: "Hail, Holy Queen..." }
+{ 
+    type: "title", 
+    isBookend: true, 
+    image: "https://www.kofpb.org/wp-content/uploads/2021/08/StDominic3.jpg", // Suggested image
+    mystery: "Final Prayers", 
+    title: "The Conclusion", 
+    text: "Hail Holy Queen & Closing Prayer",
+    isOutro: true // Add this flag to identify it in the render
+}
     ],
 
     sorrowful: [
@@ -225,6 +235,32 @@ if (!currentSet) {
                             </div>
                         </div>
                     )}
+					{/* HAIL HOLY QUEEN MODAL */}
+{showSalve && (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/60 modal-enter" onClick={() => setShowSalve(false)}>
+        <div className="max-w-2xl w-full bg-zinc-900/95 border border-white/10 p-8 md:p-12 rounded-3xl shadow-2xl" onClick={e => e.stopPropagation()}>
+            <h3 className="text-amber-500 uppercase tracking-widest text-xs font-bold mb-6 text-center">Hail, Holy Queen</h3>
+            <p className="text-zinc-200 font-serif text-lg md:text-xl leading-relaxed italic text-center">
+                Hail, holy Queen, Mother of mercy, our life, our sweetness and our hope. To thee do we cry, poor banished children of Eve: to thee do we send up our sighs, mourning and weeping in this valley of tears. Turn then, most gracious Advocate, thine eyes of mercy toward us, and after this our exile, show unto us the blessed fruit of thy womb, Jesus. O clement, O loving, O sweet Virgin Mary!
+                <br /><br />
+                V. Pray for us, O holy Mother of God.<br />
+                R. That we may be made worthy of the promises of Christ.
+            </p>
+        </div>
+    </div>
+)}
+
+{/* CLOSING PRAYER MODAL */}
+{showClosing && (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/60 modal-enter" onClick={() => setShowClosing(false)}>
+        <div className="max-w-2xl w-full bg-zinc-900/95 border border-white/10 p-8 md:p-12 rounded-3xl shadow-2xl" onClick={e => e.stopPropagation()}>
+            <h3 className="text-amber-500 uppercase tracking-widest text-xs font-bold mb-6 text-center">Concluding Prayer</h3>
+            <p className="text-zinc-200 font-serif text-lg md:text-xl leading-relaxed italic text-center">
+                O God, whose only begotten Son, by His life, death, and resurrection, has purchased for us the rewards of eternal life, grant, we beseech Thee, that meditating upon these mysteries of the Most Holy Rosary of the Blessed Virgin Mary, we may imitate what they contain and obtain what they promise, through the same Christ our Lord. Amen.
+            </p>
+        </div>
+    </div>
+)}
 
                     {/* BEAD SIDEBAR */}
                     {!isBookend && (
@@ -256,11 +292,35 @@ if (!currentSet) {
                                     <div className="flex-1 flex flex-col items-center justify-center text-center px-10">
                                         <h2 className="text-zinc-400 uppercase tracking-[0.4em] text-[10px] mb-4 font-bold">{slide.mystery}</h2>
                                         <h1 className="text-5xl md:text-8xl font-serif mb-8 text-white italic drop-shadow-2xl">{slide.title}</h1>
-                                        <div className="w-16 h-[1px] bg-white/40 mx-auto mb-10"></div>
+                                        <div className="flex flex-wrap justify-center gap-6 mt-4"></div>
                                         <p className="text-2xl md:text-4xl text-white font-serif italic mb-8 max-w-4xl">{slide.text}</p>
-                                        {i === 0 && (
-                                            <button onClick={() => setShowCreed(true)} className="px-8 py-3 bg-white/5 border border-white/20 hover:bg-white/10 text-white rounded-full uppercase text-[9px] tracking-[0.3em] font-bold backdrop-blur-sm">The Creed</button>
-                                        )}
+                                        {/* Show Creed only on the very first slide of the set */}
+    {i === 0 && (
+        <button 
+            onClick={() => setShowCreed(true)} 
+            className="px-8 py-3 bg-white/5 border border-white/20 hover:bg-white/10 text-white rounded-full uppercase text-[9px] tracking-[0.3em] font-bold backdrop-blur-sm transition-all"
+        >
+            The Creed
+        </button>
+    )}
+
+    {/* Show Salve and Closing buttons only on the Outro slide */}
+    {slide.isOutro && (
+        <>
+            <button 
+                onClick={() => setShowSalve(true)} 
+                className="px-8 py-3 bg-white/5 border border-white/20 hover:bg-white/10 text-white rounded-full uppercase text-[9px] tracking-[0.3em] font-bold backdrop-blur-sm transition-all"
+            >
+                Hail Holy Queen
+            </button>
+            <button 
+                onClick={() => setShowClosing(true)} 
+                className="px-8 py-3 bg-white/5 border border-white/20 hover:bg-white/10 text-white rounded-full uppercase text-[9px] tracking-[0.3em] font-bold backdrop-blur-sm transition-all"
+            >
+                Closing Prayer
+            </button>
+        </>
+    )}
                                     </div>
                                 ) : (
                                     <div className="flex-1 flex flex-col justify-end items-start px-4 pb-16 md:px-20 md:pb-24">
