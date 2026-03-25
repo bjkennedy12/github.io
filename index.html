@@ -34,11 +34,11 @@
             const slidesPerMystery = 12;
 
             const allSlides = [
-                { type: "title", isBookend: true, image: "https://upload.wikimedia.org/wikipedia/commons/c/c9/1%D0%B7_Ugolino_di_Nerio._The_Resurrection._1324-25._London_NG.jpg", mystery: "Opening Prayers", title: "", text: "The Creed. Our Father. Three Hail Maries. Glory Be." },
+                { type: "title", isBookend: true, image: "https://upload.wikimedia.org/wikipedia/commons/c/c9/1%D0%B7_Ugolino_di_Nerio._The_Resurrection._1324-25._London_NG.jpg", mystery: "Opening Prayers", title: "The Glorious Mysteries", text: "The Creed · Our Father · Three Hail Marys · Glory Be" },
                 // ... Mystery 1 (Resurrection)
                 { type: "title", label: "Our Father", image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj2IYgRDlNJPyg3Y_aIZ6D4KnsA0LgAHkrpOawByJovnDaAadok49ur5RWYNM2MTDUYfURw1CC1aKqhW7pJW-e6379aQaYRWIuWJa3c4mFeYhFNcRTXT_Q4V4NCsIf1C-soti_4BBAZzcu2kQiizgt0PvIgUlr7DNBe-tC5pr8A-aEZ4fdpVDI6Pcwo/s1200/The%20Empty%20Tomb.jpeg", mystery: "First Glorious Mystery", title: "The Resurrection", text: "Our Father..." },
-                { type: "ave", label: "1st Ave", image: "https://juicyecumenism.com/wp-content/uploads/Resurrection-of-Jesus.jpg", text: "Peace be with you!" },
-                { type: "ave", label: "2nd Ave", image: "https://cerebralfaith.net/wp-content/uploads/2015/05/pexels-photo-5773206.jpeg", text: "Text..." },
+                { type: "ave", label: "1st Ave", image: "https://www.artlovingitaly.com/wp-content/uploads/2025/04/Resurreciton-Duccio-1024x770.jpg", text: "'I am the resurrection and the life; whoever believes in me, even if he dies, will live, and everyone who lives and believes in me will never die." },
+                { type: "ave", label: "2nd Ave", image: "https://cerebralfaith.net/wp-content/uploads/2015/05/pexels-photo-5773206.jpeg", text: "If Christ has not been raised, then empty is our preaching...But now Christ has been raised from the dead." },
                 { type: "ave", label: "3rd Ave", image: "m1-3.jpg", text: "Text..." },
                 { type: "ave", label: "4th Ave", image: "m1-4.jpg", text: "Text..." },
                 { type: "ave", label: "5th Ave", image: "m1-5.jpg", text: "Text..." },
@@ -136,11 +136,11 @@
                                         )}
                                     </div>
                                 ) : (
-                                    <div className="w-full px-8 pb-24 md:px-20 md:pb-40 self-end">
-                                        <div className="max-w-3xl text-left border-l-2 border-amber-500/50 pl-6 py-2">
-                                            <p className="text-2xl md:text-5xl text-white font-serif leading-tight italic drop-shadow-lg">{slide.text}</p>
-                                        </div>
-                                    </div>
+                                   <div className="flex-1 flex flex-col justify-end w-full px-8 pb-8 md:px-20 md:pb-12">
+    <div className="max-w-3xl text-left border-l-2 border-amber-500/50 pl-6 py-2">
+        <p className="text-2xl md:text-3xl text-white font-serif leading-tight italic drop-shadow-lg">{slide.text}</p>
+    </div>
+</div>
                                 )}
                             </div>
                         </section>
