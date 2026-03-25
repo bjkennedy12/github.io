@@ -2,39 +2,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visual Rosary - The Resurrection</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>The Glorious Mysteries</title>
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     
     <style>
-        html {
-            scroll-snap-type: y mandatory;
-            scroll-behavior: smooth;
-            background-color: #0c0c0e;
+        html, body {
+            margin: 0; padding: 0; height: 100%;
+            overflow: hidden; background-color: #0c0c0e;
         }
-        body { margin: 0; overflow-x: hidden; }
-        ::-webkit-scrollbar { display: none; }
-        body { -ms-overflow-style: none; scrollbar-width: none; }
-
+        #root {
+            height: 100vh; overflow-y: scroll;
+            scroll-snap-type: y mandatory; scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
         section {
-            height: 100vh;
-            width: 100vw;
-            scroll-snap-align: start;
-            scroll-snap-stop: always;
-            position: relative;
-            display: flex;
+            height: 100vh; width: 100vw;
+            scroll-snap-align: start; scroll-snap-stop: always;
+            position: relative; display: flex; flex-shrink: 0;
         }
-
-        .bead-transition { 
-            transition: all 0.7s cubic-bezier(0.22, 1, 0.36, 1); 
-        }
-
-        .content-fade {
-            transition: opacity 1s ease, transform 1s ease;
-        }
+        ::-webkit-scrollbar { display: none; }
+        .bead-transition { transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+        .content-fade { transition: opacity 1s ease, transform 1s ease; }
     </style>
 </head>
 <body>
@@ -44,98 +36,140 @@
         const { useState, useEffect } = React;
 
         function RosaryApp() {
-            const [activeIndex, setActiveIndex] = useState(0);
+            const [globalIndex, setGlobalIndex] = useState(0);
+            const slidesPerMystery = 12;
 
-            const slides = [
-                {
-                    label: "Our Father",
-                    image: "https://upload.wikimedia.org/wikipedia/commons/c/c9/1%D0%B7_Ugolino_di_Nerio._The_Resurrection._1324-25._London_NG.jpg", 
-                    isTitle: true,
-                    header: "The First Glorious Mystery",
-                    title: "The Resurrection",
-                    text: "I am the resurrection and the life; whoever believes in me, even if he dies, will live." 
-                },
-                { label: "1st Ave", image: "https://upload.wikimedia.org/wikipedia/commons/c/c5/Piero_della_Francesca_-_Resurrection_%28detail%29_-_WGA17610.jpg", text: "He is not here, but he has been raised. Remember what he spoke to you while he was still in Galilee." },
-                { label: "2nd Ave", image: "https://upload.wikimedia.org/wikipedia/commons/1/19/Follower_of_Hans_Memling_-_Birth%2C_Crucifixion%2C_and_Resurrection_of_Christ_triptych_-_1510-20.jpg", text: "He is not here, but he has been raised. Remember what he spoke to you while he was still in Galilee." },
-                { label: "3rd Ave", image: "rosary-3.jpg", text: "Peace be with you! Do not be afraid." },
-                { label: "4th Ave", image: "rosary-4.jpg", text: "Peace be with you! Do not be afraid." },
-                { label: "5th Ave", image: "rosary-5.jpg", text: "Peace be with you! Do not be afraid." },
-                { label: "6th Ave", image: "rosary-6.jpg", text: "Peace be with you! Do not be afraid." },
-                { label: "7th Ave", image: "rosary-7.jpg", text: "Peace be with you! Do not be afraid." },
-                { label: "8th Ave", image: "rosary-8.jpg", text: "Peace be with you! Do not be afraid." },
-                { label: "9th Ave", image: "rosary-9.jpg", text: "Peace be with you! Do not be afraid." },
-                { label: "10th Ave", image: "rosary-10.jpg", text: "Peace be with you! Do not be afraid." }
+            // --- THE MASTER LIST ---
+            // Simply paste your Image URLs and your Text inside the quotes.
+            const allSlides = [
+                // --- MYSTERY 1: THE RESURRECTION ---
+                { type: "title", label: "Our Father", image: "https://upload.wikimedia.org/wikipedia/commons/c/c9/1%D0%B7_Ugolino_di_Nerio._The_Resurrection._1324-25._London_NG.jpg", mystery: "First Glorious Mystery", title: "The Resurrection", text: "Our Father, Who art in heaven..." },
+                { type: "ave", label: "1st Ave", image: "https://upload.wikimedia.org/wikipedia/commons/c/c5/Piero_della_Francesca_-_Resurrection_%28detail%29_-_WGA17610.jpg", text: "Peace be with you! Do not be afraid." },
+                { type: "ave", label: "2nd Ave", image: "https://mdl.artvee.com/sftb/300040rg.jpg", text: "I am the Resurrection and the Life." },
+                { type: "ave", label: "3rd Ave", image: "URL_HERE", text: "Peace be with you! Do not be afraid." },
+                { type: "ave", label: "4th Ave", image: "URL_HERE", text: "Peace be with you! Do not be afraid." },
+                { type: "ave", label: "5th Ave", image: "URL_HERE", text: "Peace be with you! Do not be afraid." },
+                { type: "ave", label: "6th Ave", image: "URL_HERE", text: "Peace be with you! Do not be afraid." },
+                { type: "ave", label: "7th Ave", image: "URL_HERE", text: "Peace be with you! Do not be afraid." },
+                { type: "ave", label: "8th Ave", image: "URL_HERE", text: "Peace be with you! Do not be afraid." },
+                { type: "ave", label: "9th Ave", image: "URL_HERE", text: "Peace be with you! Do not be afraid." },
+                { type: "ave", label: "10th Ave", image: "URL_HERE", text: "Peace be with you! Do not be afraid." },
+                { type: "glory", label: "Glory Be", image: "URL_HERE", text: "Glory be to the Father... Oh my Jesus..." },
+
+                // --- MYSTERY 2: THE ASCENSION ---
+                { type: "title", label: "Our Father", image: "URL_HERE", mystery: "Second Glorious Mystery", title: "The Ascension", text: "Our Father..." },
+                { type: "ave", label: "1st Ave", image: "URL_HERE", text: "He was lifted up, and a cloud took Him." },
+                { type: "ave", label: "2nd Ave", image: "URL_HERE", text: "Text Here" },
+                { type: "ave", label: "3rd Ave", image: "URL_HERE", text: "Text Here" },
+                { type: "ave", label: "4th Ave", image: "URL_HERE", text: "Text Here" },
+                { type: "ave", label: "5th Ave", image: "URL_HERE", text: "Text Here" },
+                { type: "ave", label: "6th Ave", image: "URL_HERE", text: "Text Here" },
+                { type: "ave", label: "7th Ave", image: "URL_HERE", text: "Text Here" },
+                { type: "ave", label: "8th Ave", image: "URL_HERE", text: "Text Here" },
+                { type: "ave", label: "9th Ave", image: "URL_HERE", text: "Text Here" },
+                { type: "ave", label: "10th Ave", image: "URL_HERE", text: "Text Here" },
+                { type: "glory", label: "Glory Be", image: "URL_HERE", text: "Glory be to the Father..." },
+
+                // --- MYSTERY 3: DESCENT OF THE HOLY SPIRIT ---
+                { type: "title", label: "Our Father", image: "URL_HERE", mystery: "Third Glorious Mystery", title: "The Descent of the Holy Spirit", text: "Our Father..." },
+                { type: "ave", label: "1st Ave", image: "URL_HERE", text: "Text Here" },
+                { type: "ave", label: "2nd Ave", image: "URL_HERE", text: "Text Here" },
+                { type: "ave", label: "3rd Ave", image: "URL_HERE", text: "Text Here" },
+                { type: "ave", label: "4th Ave", image: "URL_HERE", text: "Text Here" },
+                { type: "ave", label: "5th Ave", image: "URL_HERE", text: "Text Here" },
+                { type: "ave", label: "6th Ave", image: "URL_HERE", text: "Text Here" },
+                { type: "ave", label: "7th Ave", image: "URL_HERE", text: "Text Here" },
+                { type: "ave", label: "8th Ave", image: "URL_HERE", text: "Text Here" },
+                { type: "ave", label: "9th Ave", image: "URL_HERE", text: "Text Here" },
+                { type: "ave", label: "10th Ave", image: "URL_HERE", text: "Text Here" },
+                { type: "glory", label: "Glory Be", image: "URL_HERE", text: "Glory be..." },
+
+                // --- MYSTERY 4: THE ASSUMPTION ---
+                { type: "title", label: "Our Father", image: "URL_HERE", mystery: "Fourth Glorious Mystery", title: "The Assumption", text: "Our Father..." },
+                { type: "ave", label: "1st Ave", image: "URL_HERE", text: "Text Here" },
+                { type: "ave", label: "2nd Ave", image: "URL_HERE", text: "Text Here" },
+                { type: "ave", label: "3rd Ave", image: "URL_HERE", text: "Text Here" },
+                { type: "ave", label: "4th Ave", image: "URL_HERE", text: "Text Here" },
+                { type: "ave", label: "5th Ave", image: "URL_HERE", text: "Text Here" },
+                { type: "ave", label: "6th Ave", image: "URL_HERE", text: "Text Here" },
+                { type: "ave", label: "7th Ave", image: "URL_HERE", text: "Text Here" },
+                { type: "ave", label: "8th Ave", image: "URL_HERE", text: "Text Here" },
+                { type: "ave", label: "9th Ave", image: "URL_HERE", text: "Text Here" },
+                { type: "ave", label: "10th Ave", image: "URL_HERE", text: "Text Here" },
+                { type: "glory", label: "Glory Be", image: "URL_HERE", text: "Glory be..." },
+
+                // --- MYSTERY 5: THE CORONATION ---
+                { type: "title", label: "Our Father", image: "URL_HERE", mystery: "Fifth Glorious Mystery", title: "The Coronation", text: "Our Father..." },
+                { type: "ave", label: "1st Ave", image: "URL_HERE", text: "Text Here" },
+                { type: "ave", label: "2nd Ave", image: "URL_HERE", text: "Text Here" },
+                { type: "ave", label: "3rd Ave", image: "URL_HERE", text: "Text Here" },
+                { type: "ave", label: "4th Ave", image: "URL_HERE", text: "Text Here" },
+                { type: "ave", label: "5th Ave", image: "URL_HERE", text: "Text Here" },
+                { type: "ave", label: "6th Ave", image: "URL_HERE", text: "Text Here" },
+                { type: "ave", label: "7th Ave", image: "URL_HERE", text: "Text Here" },
+                { type: "ave", label: "8th Ave", image: "URL_HERE", text: "Text Here" },
+                { type: "ave", label: "9th Ave", image: "URL_HERE", text: "Text Here" },
+                { type: "ave", label: "10th Ave", image: "URL_HERE", text: "Text Here" },
+                { type: "glory", label: "Glory Be", image: "URL_HERE", text: "Glory be..." }
             ];
+
+            const currentMysteryIndex = Math.floor(globalIndex / slidesPerMystery);
+            const indexWithinMystery = globalIndex % slidesPerMystery;
 
             useEffect(() => {
                 const observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
                         if (entry.isIntersecting) {
-                            setActiveIndex(parseInt(entry.target.dataset.index));
+                            setGlobalIndex(parseInt(entry.target.dataset.index));
                         }
                     });
                 }, { threshold: 0.6 });
-
                 document.querySelectorAll('section').forEach(s => observer.observe(s));
                 return () => observer.disconnect();
             }, []);
 
             const scrollToSection = (i) => {
-                document.getElementById(`section-${i}`).scrollIntoView({ behavior: 'smooth' });
+                const target = (currentMysteryIndex * slidesPerMystery) + i;
+                document.getElementById(`section-${target}`).scrollIntoView({ behavior: 'smooth' });
             };
 
             return (
-                <div className="relative w-screen overflow-hidden">
-                    
-                    {/* NAV SIDEBAR */}
-                    <div className="fixed right-6 md:right-12 top-1/2 -translate-y-1/2 flex flex-col items-center z-50">
-                        {slides.map((slide, i) => (
+                <div className="relative">
+                    {/* NAV SIDEBAR (RESETS FOR EACH MYSTERY) */}
+                    <div className="fixed right-4 md:right-10 top-1/2 -translate-y-1/2 flex flex-col items-center z-50">
+                        {Array.from({ length: slidesPerMystery }).map((_, i) => (
                             <React.Fragment key={i}>
                                 <div className="group relative flex items-center cursor-pointer p-1" onClick={() => scrollToSection(i)}>
-                                    <span className={`absolute right-10 text-[10px] uppercase tracking-widest font-bold transition-all duration-500 whitespace-nowrap ${i === activeIndex ? 'text-amber-500 opacity-100 translate-x-0' : 'text-zinc-600 opacity-0 translate-x-4'}`}>
-                                        {slide.label}
+                                    <span className={`absolute right-10 text-[10px] uppercase tracking-widest font-bold transition-all duration-500 whitespace-nowrap ${i === indexWithinMystery ? 'text-amber-500 opacity-100' : 'opacity-0'}`}>
+                                        {i === 0 ? "Our Father" : i === 11 ? "Glory Be" : `${i}${["st","nd","rd"][i-1] || "th"} Ave`}
                                     </span>
-                                    <div className={`w-3 h-3 rounded-full border-2 bead-transition ${i <= activeIndex ? 'bg-amber-500 border-amber-500 shadow-[0_0_15px_rgba(245,158,11,0.5)]' : 'border-zinc-800 bg-zinc-900'}`}></div>
+                                    <div className={`w-2.5 h-2.5 rounded-full border-2 bead-transition ${i <= indexWithinMystery ? 'bg-amber-500 border-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.5)]' : 'border-zinc-800 bg-zinc-900'}`}></div>
                                 </div>
-                                {i < slides.length - 1 && (
-                                    <div className={`w-[1px] h-7 bead-transition ${i < activeIndex ? 'bg-amber-500' : 'bg-zinc-900'}`}></div>
+                                {i < slidesPerMystery - 1 && (
+                                    <div className={`w-[1px] h-4 bead-transition ${i < indexWithinMystery ? 'bg-amber-500' : 'bg-zinc-900'}`}></div>
                                 )}
                             </React.Fragment>
                         ))}
                     </div>
 
                     {/* SECTIONS */}
-                    {slides.map((slide, i) => (
+                    {allSlides.map((slide, i) => (
                         <section id={`section-${i}`} key={i} data-index={i}>
-                            {/* Background Image */}
-                            <div 
-                                className="absolute inset-0 bg-cover bg-center transition-opacity duration-1000"
-                                style={{ backgroundImage: `url('${slide.image}')` }}
-                            >
-                                {/* Light Overlay (Opacity 20) */}
-                                <div className="absolute inset-0 bg-black opacity-20"></div>
+                            <div className="absolute inset-0 bg-cover bg-center transition-opacity duration-1000" style={{ backgroundImage: `url('${slide.image}')` }}>
+                                <div className="absolute inset-0 bg-black opacity-25"></div>
                             </div>
                             
-                            {/* LAYOUT LOGIC */}
-                            {slide.isTitle ? (
-                                /* STYLE A: Centered Title (For Our Father) */
-                                <div className={`relative z-10 w-full text-center px-10 content-fade self-center ${i === activeIndex ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
-                                    <h2 className="text-zinc-200 uppercase tracking-[0.4em] text-[10px] mb-4 font-bold drop-shadow-lg">
-                                        {slide.header}
-                                    </h2>
-                                    <h1 className="text-5xl md:text-8xl font-serif font-extralight mb-8 text-white italic drop-shadow-2xl">
-                                        {slide.title}
-                                    </h1>
+                            {slide.type === "title" ? (
+                                <div className={`relative z-10 w-full text-center px-10 content-fade self-center ${i === globalIndex ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
+                                    <h2 className="text-zinc-300 uppercase tracking-[0.4em] text-[10px] mb-4 font-bold drop-shadow-md">{slide.mystery}</h2>
+                                    <h1 className="text-5xl md:text-8xl font-serif font-extralight mb-8 text-white italic drop-shadow-lg">{slide.title}</h1>
                                     <div className="w-16 h-[1px] bg-white/40 mx-auto mb-10"></div>
-                                    <p className="text-2xl md:text-4xl text-white font-serif italic drop-shadow-lg">
-                                        {slide.text}
-                                    </p>
+                                    <p className="text-2xl md:text-4xl text-white font-serif italic drop-shadow-md">{slide.text}</p>
                                 </div>
                             ) : (
-                                /* STYLE B: Bottom Left Caption (For Hail Marys) */
-                                <div className={`relative z-10 w-full p-10 md:p-20 self-end content-fade ${i === activeIndex ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-                                    <div className="max-w-2xl text-left border-l-2 border-amber-500/50 pl-6 py-2">
-                                        <p className="text-3xl md:text-3xl text-white font-serif leading-tight italic drop-shadow-2xl">
+                                <div className={`relative z-10 w-full p-8 md:p-20 self-end content-fade ${i === globalIndex ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+                                    <div className="max-w-3xl text-left border-l-2 border-amber-500/50 pl-6 py-2">
+                                        <p className="text-2xl md:text-5xl text-white font-serif leading-tight italic drop-shadow-lg">
                                             {slide.text}
                                         </p>
                                     </div>
