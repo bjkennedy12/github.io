@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visual Rosary - Custom Edition</title>
+    <title>Visual Rosary - The Resurrection</title>
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -24,18 +24,16 @@
             width: 100vw;
             scroll-snap-align: start;
             scroll-snap-stop: always;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             position: relative;
+            display: flex;
         }
 
         .bead-transition { 
             transition: all 0.7s cubic-bezier(0.22, 1, 0.36, 1); 
         }
 
-        .content-container {
-            transition: opacity 0.8s ease, transform 0.8s ease;
+        .content-fade {
+            transition: opacity 1s ease, transform 1s ease;
         }
     </style>
 </head>
@@ -48,65 +46,25 @@
         function RosaryApp() {
             const [activeIndex, setActiveIndex] = useState(0);
 
-            // --- CUSTOMIZE YOUR CONTENT HERE ---
-            // Replace the "image" URLs with your own links.
-            // Replace the "text" with the specific scripture for that bead.
             const slides = [
                 {
                     label: "Our Father",
-                    image: "https://upload.wikimedia.org/wikipedia/commons/c/c9/1%D0%B7_Ugolino_di_Nerio._The_Resurrection._1324-25._London_NG.jpg", // Example URL
-                    text: "Our Father, Who art in heaven, hallowed be Thy name..."
+                    image: "https://upload.wikimedia.org/wikipedia/commons/c/c9/1%D0%B7_Ugolino_di_Nerio._The_Resurrection._1324-25._London_NG.jpg", 
+                    isTitle: true,
+                    header: "The First Glorious Mystery",
+                    title: "The Resurrection",
+                    text: "I am the resurrection and the life; whoever believes in me, even if he dies, will live." 
                 },
-                {
-                    label: "1st Ave",
-                    image: "https://upload.wikimedia.org/wikipedia/commons/c/c5/Piero_della_Francesca_-_Resurrection_%28detail%29_-_WGA17610.jpg", // Example of a file you uploaded to GitHub
-                    text: "I will see you again, and your heart shall rejoice."
-                },
-                {
-                    label: "2nd Ave",
-                    image: "rosary-2.jpg",
-                    text: "I go to prepare a place for you. I am coming again."
-                },
-                {
-                    label: "3rd Ave",
-                    image: "rosary-3.jpg",
-                    text: "Woman, why are you weeping? Whom are you seeking?"
-                },
-                {
-                    label: "4th Ave",
-                    image: "rosary-4.jpg",
-                    text: "Touch me and see; for a spirit has not flesh and bones."
-                },
-                {
-                    label: "5th Ave",
-                    image: "rosary-5.jpg",
-                    text: "Blessed are those who have not seen and yet have believed."
-                },
-                {
-                    label: "6th Ave",
-                    image: "rosary-6.jpg",
-                    text: "Peace be with you! Do not be afraid."
-                },
-                {
-                    label: "7th Ave",
-                    image: "rosary-7.jpg",
-                    text: "Go to my brothers and tell them: I am ascending to my Father."
-                },
-                {
-                    label: "8th Ave",
-                    image: "rosary-8.jpg",
-                    text: "Did not our hearts burn within us while he talked to us?"
-                },
-                {
-                    label: "9th Ave",
-                    image: "rosary-9.jpg",
-                    text: "All authority in heaven and on earth has been given to me."
-                },
-                {
-                    label: "10th Ave",
-                    image: "rosary-10.jpg",
-                    text: "Behold, I am with you always, even to the end of the age."
-                }
+                { label: "1st Ave", image: "https://upload.wikimedia.org/wikipedia/commons/c/c5/Piero_della_Francesca_-_Resurrection_%28detail%29_-_WGA17610.jpg", text: "He is not here, but he has been raised. Remember what he spoke to you while he was still in Galilee." },
+                { label: "2nd Ave", image: "rosary-2.jpg", text: "He is not here, but he has been raised. Remember what he spoke to you while he was still in Galilee." },
+                { label: "3rd Ave", image: "rosary-3.jpg", text: "Peace be with you! Do not be afraid." },
+                { label: "4th Ave", image: "rosary-4.jpg", text: "Peace be with you! Do not be afraid." },
+                { label: "5th Ave", image: "rosary-5.jpg", text: "Peace be with you! Do not be afraid." },
+                { label: "6th Ave", image: "rosary-6.jpg", text: "Peace be with you! Do not be afraid." },
+                { label: "7th Ave", image: "rosary-7.jpg", text: "Peace be with you! Do not be afraid." },
+                { label: "8th Ave", image: "rosary-8.jpg", text: "Peace be with you! Do not be afraid." },
+                { label: "9th Ave", image: "rosary-9.jpg", text: "Peace be with you! Do not be afraid." },
+                { label: "10th Ave", image: "rosary-10.jpg", text: "Peace be with you! Do not be afraid." }
             ];
 
             useEffect(() => {
@@ -149,26 +107,40 @@
                     {/* SECTIONS */}
                     {slides.map((slide, i) => (
                         <section id={`section-${i}`} key={i} data-index={i}>
+                            {/* Background Image */}
                             <div 
                                 className="absolute inset-0 bg-cover bg-center transition-opacity duration-1000"
                                 style={{ backgroundImage: `url('${slide.image}')` }}
                             >
-                                {/* THE OVERLAY: 0.2 means 20% dark. Increase to 0.5 if text is hard to read */}
+                                {/* Light Overlay (Opacity 20) */}
                                 <div className="absolute inset-0 bg-black opacity-20"></div>
                             </div>
                             
-                            <div className={`relative z-10 max-w-4xl text-center px-10 content-container ${i === activeIndex ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
-                                <h2 className="text-zinc-200 uppercase tracking-[0.4em] text-[10px] mb-4 font-bold drop-shadow-md">
-                                    The First Glorious Mystery
-                                </h2>
-                                <h1 className="text-4xl md:text-7xl font-serif font-extralight mb-8 text-white italic drop-shadow-lg">
-                                    The Resurrection
-                                </h1>
-                                <div className="w-16 h-[1px] bg-white/40 mx-auto mb-10"></div>
-                                <p className="text-2xl md:text-4xl text-white font-serif leading-relaxed italic px-4 drop-shadow-md">
-                                    {slide.text}
-                                </p>
-                            </div>
+                            {/* LAYOUT LOGIC */}
+                            {slide.isTitle ? (
+                                /* STYLE A: Centered Title (For Our Father) */
+                                <div className={`relative z-10 w-full text-center px-10 content-fade self-center ${i === activeIndex ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
+                                    <h2 className="text-zinc-200 uppercase tracking-[0.4em] text-[10px] mb-4 font-bold drop-shadow-lg">
+                                        {slide.header}
+                                    </h2>
+                                    <h1 className="text-5xl md:text-8xl font-serif font-extralight mb-8 text-white italic drop-shadow-2xl">
+                                        {slide.title}
+                                    </h1>
+                                    <div className="w-16 h-[1px] bg-white/40 mx-auto mb-10"></div>
+                                    <p className="text-2xl md:text-4xl text-white font-serif italic drop-shadow-lg">
+                                        {slide.text}
+                                    </p>
+                                </div>
+                            ) : (
+                                /* STYLE B: Bottom Left Caption (For Hail Marys) */
+                                <div className={`relative z-10 w-full p-10 md:p-20 self-end content-fade ${i === activeIndex ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+                                    <div className="max-w-2xl text-left border-l-2 border-amber-500/50 pl-6 py-2">
+                                        <p className="text-3xl md:text-5xl text-white font-serif leading-tight italic drop-shadow-2xl">
+                                            {slide.text}
+                                        </p>
+                                    </div>
+                                </div>
+                            )}
                         </section>
                     ))}
                 </div>
