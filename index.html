@@ -12,7 +12,7 @@
     <style>
         html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; background-color: #0c0c0e; color: white; }
         #root { height: 100vh; overflow-y: scroll; scroll-snap-type: y mandatory; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
-        section { height: 100vh; width: 100vw; scroll-snap-align: start; scroll-snap-stop: always; position: relative; display: flex; flex-shrink: 0; }
+        section { height: 100vh; width: 100vw; scroll-snap-align: start; scroll-snap-stop: always; position: relative; display: flex; flex-shrink: 0; overflow: hidden;}
         ::-webkit-scrollbar { display: none; }
         .bead-transition { transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
         .content-fade { transition: opacity 1s ease, transform 1s ease; }
@@ -53,21 +53,21 @@
  const mysteryData = {
     glorious: [
         // INTRO
-        { type: "title", isBookend: true, image: "INTRO_URL", mystery: "Opening Prayers", title: "The Glorious Mysteries", text: "In the name of the Father..." },
+        { type: "title", isBookend: true, image: "https://portal.catholictv.org/resources/Glorious_Mysteries_2.jpg", mystery: "Opening Prayers", title: "The Glorious Mysteries", text: "Creed · Our Father · Three Hail Mary’s · Glory Be" },
 
         // --- FIRST MYSTERY: THE RESURRECTION ---
-        { type: "title", label: "Our Father", image: "IMAGE_URL", mystery: "First Glorious Mystery", title: "The Resurrection", text: "Our Father..." },
-        { type: "ave", label: "1st Ave", image: "IMAGE_URL", text: "Peace be with you! Do not be afraid." },
-        { type: "ave", label: "2nd Ave", image: "IMAGE_URL", text: "I am the Resurrection and the Life." },
-        { type: "ave", label: "3rd Ave", image: "IMAGE_URL", text: "Text for 3rd Ave..." },
-        { type: "ave", label: "4th Ave", image: "IMAGE_URL", text: "Text for 4th Ave..." },
-        { type: "ave", label: "5th Ave", image: "IMAGE_URL", text: "Text for 5th Ave..." },
-        { type: "ave", label: "6th Ave", image: "IMAGE_URL", text: "Text for 6th Ave..." },
-        { type: "ave", label: "7th Ave", image: "IMAGE_URL", text: "Text for 7th Ave..." },
-        { type: "ave", label: "8th Ave", image: "IMAGE_URL", text: "Text for 8th Ave..." },
-        { type: "ave", label: "9th Ave", image: "IMAGE_URL", text: "Text for 9th Ave..." },
-        { type: "ave", label: "10th Ave", image: "IMAGE_URL", text: "Text for 10th Ave..." },
-        { type: "glory", label: "Glory Be", image: "IMAGE_URL", text: "Glory be to the Father... Oh my Jesus..." },
+        { type: "title", label: "Our Father", image: "https://mycatholic.life/wp-content/uploads/2020/04/Paolo_Veronese_-_The_Resurrection_of_Christ_-_WGA24817.jpg", mystery: "First Glorious Mystery", title: "The Resurrection", text: "Our Father..." },
+        { type: "ave", label: "1st Ave", image: "https://integratedcatholiclife.org/wp-content/uploads/Bloch_Resurrection_LV-rt-16x9-1-1200x640.jpg", text: "He is not here, for he has been raised just as he said. Come and see the place where he lay." },
+        { type: "ave", label: "2nd Ave", image: "https://jesuitmedialab.org/wp-content/uploads/2024/03/Ricci_Sebastiano_-_The_Resurrection.jpg", text: "I am the resurrection and the life; whoever believes in me, even if he dies, will live." },
+        { type: "ave", label: "3rd Ave", image: "https://www.learnreligions.com/thmb/f7DQSrj8vaojmKHlQzFT0G3XJ4w=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Resurrection-58b5e6c65f9b5860460663b3.jpg", text: "The resurrection of Christ was God’s supreme supreme intervention in the history of the world." },
+        { type: "ave", label: "4th Ave", image: "https://www.simplycatholic.com/wp-content/uploads/2019/03/resurrection1.jpg", text: "“Do not be afraid. I am the first and the last, the one who lives. Once I was dead, but now I am alive forever and ever. I hold the keys to death and the netherworld." },
+        { type: "ave", label: "5th Ave", image: "https://www.dolr.org/sites/default/files/facebookimages/easter-sunday-facebook-2024.jpg", text: "He who raised Him from the dead will raise us also, if we do His will and walk in His commandments." },
+        { type: "ave", label: "6th Ave", image: "https://publisher-ncreg.s3.us-east-2.amazonaws.com/pb-ncregister/swp/hv9hms/media/20210406060416_a12acb779efb64f63535f05f4cbb5e5c5f62e3875b8e63850498fdf883bf0eed.jpg", text: "Our Savior has risen; let us rise with Him. He has died to sin once; let us die to ourselves forever." },
+        { type: "ave", label: "7th Ave", image: "https://www.churchpop.com/content/images/size/w1200/wordpress/2023/04/resurrection-scaled.jpeg", text: "Just as Christ was raised from the dead by the glory of the Father, we too might live in newness of life." },
+        { type: "ave", label: "8th Ave", image: "https://todayscatholic.org/wp-content/uploads/2017/04/15BishopColumn.jpg", text: "The Resurrection is the sun that never sets, the light that guides every soul to the heart of the Father." },
+        { type: "ave", label: "9th Ave", image: "https://www.learnreligions.com/thmb/rQCkiaCIZFYE4_AtU1fm60-RMSE=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Resurrection-of-Christ-58e532e53df78c5162b44185.jpg", text: "The Lord has truly been raised and has appeared to Simon!" },
+        { type: "ave", label: "10th Ave", image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh-g1rBcCYywBd2eeG_xG2L7CaSVWo1Ae-9vmTYDPNYCNnNA3gY-zZeJWk74PvODIKEiFdBcW7Xd67zPcQSoWDZF-Em5CImUTv8KD2XLr1sdE25Jw3wwGepi-GcpINFffbV22P-j3rs0hgE/s1600/Christ%2527s_Appearance_to_Mary_Magdalene_after_the_Resurrection.jpg", text: "Let us live with the Risen Christ, for His life is our life, and His glory is our eternal hope." },
+        { type: "glory", label: "Glory Be", image: "https://www.stlouisreview.com/wp-content/uploads/2025/04/20060712T0900-REDEMPTION-DOME-MOSAIC-FEATURES-SALVIFIC-WORKS-OF-1216364.jpg", text: "Glory Be · Oh, My Jesus…" },
 
         // --- SECOND MYSTERY: THE ASCENSION ---
         { type: "title", label: "Our Father", image: "IMAGE_URL", mystery: "Second Glorious Mystery", title: "The Ascension", text: "Our Father..." },
@@ -139,8 +139,10 @@ if (!currentSet) {
 
             {/* 2. CONTENT LAYER */}
             <div className="relative z-10 flex flex-col items-center w-full">
-                <h2 className="text-zinc-300 uppercase tracking-[0.4em] text-[10px] mb-4 font-bold drop-shadow-md">Daily Devotion</h2>
                 <h1 className="text-5xl md:text-7xl font-serif text-white italic mb-12 drop-shadow-2xl">The Holy Rosary</h1>
+<h2 className="text-white uppercase tracking-[0.4em] text-[15px] mb-4 font-bold drop-shadow-md">
+    {new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(new Date())}
+</h2>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-3xl">
                     {[
@@ -176,7 +178,7 @@ if (!currentSet) {
                             <div className="max-w-2xl w-full bg-zinc-900/95 border border-white/10 p-8 md:p-12 rounded-3xl shadow-2xl" onClick={e => e.stopPropagation()}>
                                 <h3 className="text-amber-500 uppercase tracking-widest text-xs font-bold mb-6 text-center">The Apostles' Creed</h3>
                                 <p className="text-zinc-200 font-serif text-lg md:text-xl leading-relaxed italic text-center">
-                                    I believe in God, the Father almighty, Creator of heaven and earth...
+                                    I believe in God, the Father almighty, Creator of heaven and earth, and in Jesus Christ, His only Son, our Lord, Who was conceived by the Holy Spirit, born of the Virgin Mary, suffered under Pontius Pilate, was crucified, died and was buried; He descended into hell; on the third day He rose again from the dead; He ascended into heaven, and is seated at the right hand of God the Father almighty; from there He will come to judge the living and the dead. I believe in the Holy Spirit, the holy catholic Church, the communion of saints, the forgiveness of sins, the resurrection of the body, and life everlasting. Amen.
                                 </p>
                             </div>
                         </div>
@@ -188,9 +190,9 @@ if (!currentSet) {
                             {Array.from({ length: slidesPerMystery }).map((_, i) => (
                                 <React.Fragment key={i}>
                                     <div className="group relative flex items-center cursor-pointer p-1" onClick={() => scrollToSection(i)}>
-                                        <span className={`absolute right-10 text-[9px] uppercase tracking-widest font-bold transition-all duration-500 whitespace-nowrap ${i === indexWithinMystery ? 'text-amber-500 opacity-100' : 'opacity-0'}`}>
-                                            {i === 0 ? "Our Father" : i === 11 ? "Glory Be" : `${i} Ave`}
-                                        </span>
+                                   <span className={`absolute right-10 text-[9px] uppercase tracking-widest font-bold transition-all duration-500 whitespace-nowrap ${i === indexWithinMystery ? 'text-amber-500 opacity-100' : 'opacity-0'}`}>
+    {i === 0 ? "Our Father" : i === 11 ? "Glory Be" : ""}
+</span>
                                         <div className={`w-2.5 h-2.5 rounded-full border-2 bead-transition ${i <= indexWithinMystery ? 'bg-amber-500 border-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.5)]' : 'border-zinc-800 bg-zinc-900'}`}></div>
                                     </div>
                                     {i < slidesPerMystery - 1 && <div className={`w-[1px] h-4 bead-transition ${i < indexWithinMystery ? 'bg-amber-500' : 'bg-zinc-900'}`}></div>}
@@ -221,7 +223,9 @@ if (!currentSet) {
                                 ) : (
                                     <div className="flex-1 flex flex-col justify-end items-start px-4 pb-16 md:px-20 md:pb-24">
                                         <div className="w-full md:max-w-3xl text-left border-l-2 border-amber-500/50 pl-4 md:pl-6 py-2">
-                                            <p className="text-2xl md:text-5xl text-white font-serif leading-tight italic drop-shadow-lg">{slide.text}</p>
+                                            <p className="text-lg md:text-5xl text-white font-serif leading-tight italic drop-shadow-lg">
+  {slide.text}
+</p>
                                         </div>
                                     </div>
                                 )}
