@@ -124,7 +124,7 @@
                 document.getElementById(`section-${target}`).scrollIntoView({ behavior: 'smooth' });
             };
 
-            // --- START PAGE (MENU) ---
+// --- START PAGE (MENU) ---
 if (!currentSet) {
     return (
         <div className="relative h-screen w-screen overflow-hidden flex flex-col items-center justify-center p-6 text-center">
@@ -134,13 +134,12 @@ if (!currentSet) {
                 className="absolute inset-0 bg-cover bg-center transition-transform duration-[10s] scale-110" 
                 style={{ backgroundImage: `url('https://www.arthistoryproject.com/site/assets/files/28867/diego_velazquez-coronation_of_the_virgin-1636-trivium-art-history-1.webp')` }}
             >
-                {/* 2. DARK OVERLAY (Ensures menu text is readable) */}
-
+                {/* Opaque overlay removed as requested */}
             </div>
 
-            {/* 3. CONTENT LAYER (Now wrapped in a relative div to sit above the image) */}
+            {/* 2. CONTENT LAYER */}
             <div className="relative z-10 flex flex-col items-center w-full">
-                <h2 className="text-zinc-400 uppercase tracking-[0.4em] text-[10px] mb-4 font-bold drop-shadow-md">Daily Devotion</h2>
+                <h2 className="text-zinc-300 uppercase tracking-[0.4em] text-[10px] mb-4 font-bold drop-shadow-md">Daily Devotion</h2>
                 <h1 className="text-5xl md:text-7xl font-serif text-white italic mb-12 drop-shadow-2xl">The Holy Rosary</h1>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-3xl">
@@ -151,8 +150,9 @@ if (!currentSet) {
                         { id: 'glorious', day: 'Wed & Sun', name: 'Glorious', color: 'border-amber-500/30' }
                     ].map(m => (
                         <button key={m.id} onClick={() => { setCurrentSet(m.id); setGlobalIndex(0); }} 
-                            className={`p-6 bg-black/40 border ${m.color} rounded-2xl hover:bg-white/10 transition-all text-left backdrop-blur-md`}>
-                            <span className="block text-[9px] uppercase tracking-widest text-zinc-500 mb-1">{m.day}</span>
+                            className={`p-6 bg-black/40 border ${m.color} rounded-2xl hover:bg-white/10 transition-all text-left backdrop-blur-[2px]`}>
+                            {/* Updated text-white here */}
+                            <span className="block text-[9px] uppercase tracking-widest text-white/90 mb-1 font-bold">{m.day}</span>
                             <span className="text-xl text-white font-serif italic">{m.name} Mysteries</span>
                         </button>
                     ))}
