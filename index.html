@@ -18,6 +18,26 @@
         .content-fade { transition: opacity 1s ease, transform 1s ease; }
         .modal-enter { animation: fadeIn 0.4s ease forwards; }
         @keyframes fadeIn { from { opacity: 0; backdrop-filter: blur(0px); } to { opacity: 1; backdrop-filter: blur(12px); } }
+		.parallax {
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+}
+@keyframes kenburns {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(1.15); /* Adjust this number for a more or less intense zoom */
+    }
+}
+
+.ken-burns {
+    /* 1. Changed 'infinite' to '1' (or just remove it as 1 is default) */
+    /* 2. Added 'forwards' to freeze the animation at the end */
+    animation: kenburns 30s ease-out forwards;
+    transform-origin: center;
+}
     </style>
 </head>
 <body>
@@ -141,8 +161,22 @@
     ],
 
     sorrowful: [
-        { type: "title", isBookend: true, image: "SORROWFUL_INTRO_URL", mystery: "Opening Prayers", title: "The Sorrowful Mysteries", text: "..." },
-        // ... (Follow the same manual list pattern as above)
+        // INTRO
+        { type: "title", isBookend: true, image: "https://blog.verbum.com/wp-content/blogs.dir/20/files/2014/10/crowning-with-thorns.jpg", mystery: "Opening Prayers", title: "The Sorrowful Mysteries", text: "Creed · Our Father · Three Hail Mary’s · Glory Be" },
+
+// --- FIRST MYSTERY: THE AGONY ---
+        { type: "title", label: "Our Father", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Christ_in_Gethsemane.jpg/960px-Christ_in_Gethsemane.jpg", mystery: "Sorrowful Mystery", title: "The Agony in the Garden", text: "Our Father..." },
+        { type: "ave", label: "1st Ave", image: "https://images.squarespace-cdn.com/content/v1/52f27af5e4b07a7a3063e7ef/1404100358526-R6Y7VY4VAB6HIIBM7CZS/gethsemane_angel-comforts.jpg", text: "Text" },
+        { type: "ave", label: "2nd Ave", image: "https://upload.wikimedia.org/wikipedia/commons/5/5d/Pietro_Perugino_cat20.jpg", text: "Text" },
+        { type: "ave", label: "3rd Ave", image: "https://museum.wales/media-dams/65b3d33a-4ce0-3565-86d4-6e7d49097b53/mid/", text: "Text" },
+        { type: "ave", label: "4th Ave", image: "https://images.squarespace-cdn.com/content/v1/5e7bc94129201869adcc15c5/1585178755497-TO28N2DXFQOU4QHQRFLZ/Christ-at-Gethsemane.jpg", text: "Text" },
+        { type: "ave", label: "5th Ave", image: "https://sammlung.staedelmuseum.de/images/1777/meister-des-nuernberger-marienaltars-agony-garden-1792--thumb-xl.jpg", text: "Text" },
+        { type: "ave", label: "6th Ave", image: "https://www.pubhist.com/works/11/large/eugene_delacroix_agony_garden.jpg", text: "Text" },
+        { type: "ave", label: "7th Ave", image: "https://divinemercy.com.au/cdn/shop/files/AgonyintheGarden_2000x1546.jpg?v=1727242162", text: "Text" },
+        { type: "ave", label: "8th Ave", image: "https://i0.wp.com/www.americamagazine.org/wp-content/uploads/2024/09/The_Taking_of_Christ-Caravaggio_c.1602.jpg-684470.jpg?fit=1200%2C930&ssl=1", text: "Text" },
+        { type: "ave", label: "9th Ave", image: "https://www.christianiconography.info/Venice%202018/Ferrara/gethsemaneGarofalo.JPG", text: "Text" },
+        { type: "ave", label: "10th Ave", image: "https://upload.wikimedia.org/wikipedia/commons/8/85/Cathedral_Church_of_Saint_Patrick_%28Charlotte%2C_North_Carolina%29_-_stained_glass%2C_Agony_in_the_Garden.JPG", text: "Text" },
+        { type: "glory", label: "Glory Be", image: "https://cdn2.picryl.com/photo/2021/12/09/st-peter-cut-slaves-ear-by-duccio-7b8b16-1024.jpg", text: "Glory Be · Oh, My Jesus…" },
     ],
 
     joyful: [
@@ -376,7 +410,11 @@ if (!currentSet) {
                     {/* SECTIONS */}
                     {allSlides.map((slide, i) => (
                         <section id={`section-${i}`} key={i} data-index={i} className="flex flex-col">
-                            <div className="absolute inset-0 bg-cover bg-center transition-transform duration-[10s] ease-linear scale-110" style={{ backgroundImage: `url('${slide.image}')` }}>
+                    <div
+    className="absolute inset-0 parallax ken-burns"
+    style={{ backgroundImage: `url('${slide.image}')` }}
+>
+>
                                 <div className="absolute inset-0 bg-black/30"></div>
                             </div>
                             
