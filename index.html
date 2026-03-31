@@ -552,12 +552,16 @@ if (!currentSet) {
                         <div className="fixed right-4 md:right-10 top-1/2 -translate-y-1/2 flex flex-col items-center z-50">
                             {Array.from({ length: slidesPerMystery }).map((_, i) => (
                                 <React.Fragment key={i}>
-                                    <div className="group relative flex items-center cursor-pointer p-1" onClick={() => scrollToSection(i)}>
-                                   <span className={`absolute right-10 text-[9px] uppercase tracking-widest font-bold transition-all duration-500 whitespace-nowrap ${i === indexWithinMystery ? 'text-amber-500 opacity-100' : 'opacity-0'}`}>
-    {i === 0 ? "Our Father" : i === 11 ? "Glory Be" : ""}
-</span>
-                                        <div className={`w-2.5 h-2.5 rounded-full border-2 bead-transition ${i <= indexWithinMystery ? 'bg-amber-500 border-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.5)]' : 'border-zinc-800 bg-zinc-900'}`}></div>
-                                    </div>
+                                    <div className="group relative flex items-center justify-center cursor-pointer p-1" onClick={() => scrollToSection(i)}>
+    <span className={`absolute right-10 text-[9px] uppercase tracking-widest font-bold transition-all duration-500 whitespace-nowrap ${i === indexWithinMystery ? 'text-amber-500 opacity-100' : 'opacity-0'}`}>
+        {i === 0 ? "Our Father" : i === 11 ? "Glory Be" : ""}
+    </span>
+    <div className={`
+        rounded-full border-2 bead-transition 
+        ${(i === 0 || i === 11) ? 'w-4 h-4' : 'w-2 h-2'} 
+        ${i <= indexWithinMystery ? 'bg-amber-500 border-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.5)]' : 'border-zinc-800 bg-zinc-900'}
+    `}></div>
+</div>
                                     {i < slidesPerMystery - 1 && <div className={`w-[1px] h-4 bead-transition ${i < indexWithinMystery ? 'bg-amber-500' : 'bg-zinc-900'}`}></div>}
                                 </React.Fragment>
                             ))}
