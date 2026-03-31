@@ -75,8 +75,16 @@
 
  const mysteryData = {
     glorious: [
-        // INTRO
-        { type: "title", isBookend: true, image: "https://portal.catholictv.org/resources/Glorious_Mysteries_2.jpg", mystery: "Opening Prayers", title: "The Glorious Mysteries", text: "Creed · Our Father · Hail Mary · Glory Be" },
+            // INTRO
+    { 
+        type: "title", 
+        isBookend: true, 
+        image: "https://portal.catholictv.org/resources/Glorious_Mysteries_2.jpg", 
+        mystery: "Opening Prayers", 
+        title: "The Glorious Mysteries", 
+        text: "Our Father · Hail Mary · Glory Be",
+        openingBeads: 5 // Add this line
+    },
 
         // --- FIRST MYSTERY: THE RESURRECTION ---
         { type: "title", label: "Our Father", image: "https://mycatholic.life/wp-content/uploads/2020/04/Paolo_Veronese_-_The_Resurrection_of_Christ_-_WGA24817.jpg", mystery: "First Glorious Mystery", title: "The Resurrection", text: "Our Father..." },
@@ -169,7 +177,7 @@
         image: "https://blog.verbum.com/wp-content/blogs.dir/20/files/2014/10/crowning-with-thorns.jpg", 
         mystery: "Opening Prayers", 
         title: "The Sorrowful Mysteries", 
-        text: "Creed · Our Father · Hail Mary · Glory Be",
+        text: "Our Father · Hail Mary · Glory Be",
         openingBeads: 5 // Add this line
     },
 // --- FIRST MYSTERY: THE AGONY ---
@@ -256,8 +264,16 @@
     ],
 
  joyful: [
-        { type: "title", isBookend: true, image: "https://d23gjylftzdlen.cloudfront.net/db_photo/d6999/u350469991/69_1973_dig_01_o2.jpg", mystery: "Opening Prayers", title: "The Joyful Mysteries", text: "The Creed · Our Father · Three Hail Mary’s · Glory Be" },	
-
+            // INTRO
+    { 
+        type: "title", 
+        isBookend: true, 
+        image: "https://d23gjylftzdlen.cloudfront.net/db_photo/d6999/u350469991/69_1973_dig_01_o2.jpg", 
+        mystery: "Opening Prayers", 
+        title: "The Joyful Mysteries", 
+        text: "Our Father · Hail Mary · Glory Be",
+        openingBeads: 5 // Add this line
+    },
  // --- FIRST MYSTERY: THE ANNUNCIATION ---
         { type: "title", label: "Our Father", image: "https://www.mountosb.org/wp-content/uploads/2025/03/The-Feast-of-the-Annunciation.jpg", mystery: "First Joyful Mystery", title: "The Annunciation", text: "Our Father...", focal:"75% 10%" },
         { type: "ave", label: "1st Ave", image: "https://www.wga.hu/art/b/bartolom/fra/annuncia.jpg", text: "And coming to her, he said, 'Hail, favored one! The Lord is with you.", focal:"75% 50%" },
@@ -342,7 +358,16 @@
 		
     ],
     luminous: [
-        { type: "title", isBookend: true, image: "https://www.ctsbooks.org/wp-content/uploads/2021/10/Week-29-Blogs-1536x1024.png", mystery: "Opening Prayers", title: "The Luminous Mysteries", text: "The Creed · Our Father · Three Hail Mary’s · Glory Be" },
+            // INTRO
+    { 
+        type: "title", 
+        isBookend: true, 
+        image: "https://www.ctsbooks.org/wp-content/uploads/2021/10/Week-29-Blogs-1536x1024.png", 
+        mystery: "Opening Prayers", 
+        title: "The Luminous Mysteries", 
+        text: "Our Father · Hail Mary · Glory Be",
+        openingBeads: 5 // Add this line
+    },
 		
 		// --- FIRST MYSTERY: THE BAPTISM ---
         { type: "title", label: "Our Father", image: "https://angelusnews.com/wp-content/uploads/2025/01/Screenshot-2025-01-10-at-9.43.54-AM-e1736527524674.png", mystery: "First Luminous Mystery", title: "The Baptism of the Lord", text: "Our Father..." },
@@ -585,10 +610,7 @@ if (!currentSet) {
                                     <div className="flex-1 flex flex-col items-center justify-center text-center px-10">
                                         <h2 className="text-white-400 uppercase tracking-[0.4em] text-[10px] mb-4 font-bold">{slide.mystery}</h2>
                                         <h1 className="text-5xl md:text-8xl font-serif mb-8 text-white italic drop-shadow-2xl">{slide.title}</h1>
-                                        <div className="flex flex-wrap justify-center gap-6 mt-4"></div>
-                                        <p className="text-2xl md:text-4xl text-white font-serif italic mb-8 max-w-4xl">{slide.text}</p>
-										
-{/* Show Creed only on the very first slide of the set */}
+										{/* Show Creed only on the very first slide of the set */}
     {i === 0 && (
         <button 
             onClick={() => setShowCreed(true)} 
@@ -597,6 +619,10 @@ if (!currentSet) {
             The Creed
         </button>
     )}
+                                        <div className="flex flex-wrap justify-center gap-6 mt-4"></div>
+                                        <p className="text-2xl md:text-4xl text-white font-serif italic mb-8 max-w-4xl">{slide.text}</p>
+										
+
 {/* INSERT BEADS HERE */}
 {slide.openingBeads && (
     <div className="flex gap-4 mb-8 justify-center items-center">
